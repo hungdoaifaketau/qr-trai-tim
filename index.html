@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VietKhanh Generator - Tạo Dải Ngân Hà Của Riêng Bạn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            font-family: 'Orbitron', sans-serif;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff6b9d, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 107, 157, 0.5);
+        }
+        
+     p, .subtitle {
+      font-family: 'Inter', Arial, 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    letter-spacing: 0.01em;
+    margin-bottom: 2rem;
+}
+        
+        .buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b9d, #4ecdc4);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid #4ecdc4;
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 107, 157, 0.4);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(78, 205, 196, 0.1);
+            box-shadow: 0 20px 40px rgba(78, 205, 196, 0.3);
+        }
+        
+        .features {
+            margin-top: 4rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature h3 {
+            margin-bottom: 1rem;
+            color: #4ecdc4;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        /* Nút donate nổi */
+        #donateBtn {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 9999;
+            background: linear-gradient(45deg, #ff6b9d, #4ecdc4);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 2rem;
+            box-shadow: 0 4px 24px #0004;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Dialog donate */
+        #donateDialog {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.45);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #donateDialog > div {
+            background: #fff;
+            color: #222;
+            border-radius: 18px;
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            max-width: 90vw;
+            width: 350px;
+            box-shadow: 0 8px 32px #0005;
+            text-align: center;
+            position: relative;
+        }
+
+        #closeDonateDialog {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #888;
+            cursor: pointer;
+        }
+
+        #donateDialog h2 {
+            color: #ff6b9d;
+            margin-bottom: 0.5rem;
+        }
+
+        #donateDialog p {
+            margin-bottom: 1rem;
+        }
+
+        #donateDialog img {
+            width: 180px;
+            max-width: 90%;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px #0002;
+        }
+
+        #donateDialog div {
+            margin-top: 0.7rem;
+            font-size: 0.95rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Một Chút Ngọt Ngào – Một Trời Hạnh Phúc</h1>
+        <p class="subtitle">
+            Tạo ra những món quà tinh thần dễ thương, những lời chúc ngọt ngào, những điều bé nhỏ nhưng đầy ý nghĩa để khiến ai đó mỉm cười.
+        </p>
+        
+        <div class="buttons">
+            <a href="creator.html" class="btn btn-primary">
+                ✨ Tạo cho riêng bạn
+            </a>
+          <a href="galaxy-viewer.html?demo=1" class="btn btn-secondary">
+    🌌 Xem Demo
+</a>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">📝</div>
+                <h3>Tùy Chỉnh Tin Nhắn</h3>
+                <p>Nhập những dòng chữ ý nghĩa, lời chúc sinh nhật, hay thông điệp yêu thương</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🎨</div>
+                <h3>Chọn Màu Sắc</h3>
+                <p>Tùy chỉnh màu sắc cho từng loại tin nhắn, tạo nên hiệu ứng thị giác độc đáo</p>
+            </div>
+              <div class="feature">
+                <div class="feature-icon">🎶</div>
+                <h3>Thêm bài hát</h3>
+                <p>
+                    Tải lên âm thanh yêu thích của bạn từ máy tính hoặc chọn từ thư viện âm thanh có sẵn.
+                </p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔗</div>
+                <h3>Chia Sẻ Dễ Dàng</h3>
+                <p>Nhận link chia sẻ ngay lập tức, gửi cho bạn bè và gia đình</p>
+            </div>
+        </div>
+    </div>
+    <div id="qrCode" style="margin: 1rem auto;"></div>
+    
+    <!-- Nút donate nổi -->
+<button id="donateBtn" style="
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 9999;
+  background: linear-gradient(45deg, #ff6b9d, #4ecdc4);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  font-size: 2rem;
+  box-shadow: 0 4px 24px #0004;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+">💖</button>
+
+<!-- Dialog donate -->
+<div id="donateDialog" style="
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.45);
+  align-items: center;
+  justify-content: center;
+">
+  <div style="
+    background: #fff;
+    color: #222;
+    border-radius: 18px;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    max-width: 90vw;
+    width: 350px;
+    box-shadow: 0 8px 32px #0005;
+    text-align: center;
+    position: relative;
+  ">
+    <button id="closeDonateDialog" style="
+      position: absolute;
+      top: 12px; right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #888;
+      cursor: pointer;
+    " title="Đóng">&times;</button>
+    <h2 style="color:#ff6b9d;margin-bottom:0.5rem;">Ủng hộ tác giả</h2>
+    <p style="margin-bottom:1rem;color: #16213e;">Chào bạn, mình là Việt Khánh. Nếu bạn thấy dự án này hữu ích, hãy ủng hộ mình để mình có thêm động lực nhé! Cảm ơn rất nhiều 💗</p>
+    <img src="//img.upanh.tv/2025/05/31/IMG_1191a0654cb36f0947cf.jpeg" alt="QR Donate" style="width:180px;max-width:90%;border-radius:12px;box-shadow:0 2px 12px #0002;">
+    <img src="//img.upanh.tv/2025/05/31/IMG_1191.jpeg" alt="QR Donate" style="width:180px;max-width:90%;border-radius:12px;box-shadow:0 2px 12px #0002;">
+    <p style="margin-bottom:1rem;color: #16213e;">Mình đã bỏ ra một buổi sáng để làm ra website này, hy vọng nó sẽ giúp ích được gì đó cho mọi người 💗</p>
+
+  </div>
+</div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <script>
+        // Thêm hiệu ứng chấm nhấp nháy
+        function createStars() {
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'fixed';
+                star.style.width = '2px';
+                star.style.height = '2px';
+                star.style.background = 'white';
+                star.style.borderRadius = '50%';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animation = `twinkle ${Math.random() * 3 + 2}s infinite`;
+                star.style.opacity = Math.random();
+                document.body.appendChild(star);
+            }
+        }
+        
+        // CSS animation cho stars
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes twinkle {
+                0%, 100% { opacity: 0.2; }
+                50% { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        createStars();
+
+        // Mở dialog ủng hộ
+        document.getElementById('donateBtn').addEventListener('click', () => {
+            document.getElementById('donateDialog').style.display = 'flex';
+        });
+
+        // Đóng dialog ủng hộ
+        document.getElementById('closeDonateDialog').addEventListener('click', () => {
+            document.getElementById('donateDialog').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

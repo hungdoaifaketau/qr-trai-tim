@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Mã QR Hình Trái Tim</title>
+    <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Satisfy|Playball|Lobster|Montserrat|Dancing+Script&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+    body {
+    font-family: 'Arial', sans-serif;
+               background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 90vw;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #ff4757;
+            margin-bottom: 20px;
+            font-size: clamp(1.5em, 4vw, 2.5em);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: clamp(0.9em, 2.5vw, 1.1em);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: clamp(14px, 3vw, 16px);
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #ff4757;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.2);
+        }
+
+        button, .download-btn {
+            background: linear-gradient(45deg, #6a82fb, #fc5c7d);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: clamp(14px, 3vw, 18px);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(106, 130, 251, 0.2);
+            margin: 10px 5px;
+        }
+
+        button:hover, .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(252, 92, 125, 0.3);
+        }
+
+        .heart-container {
+            position: relative;
+            width: min(90vw, 400px);
+            height: min(90vw, 400px);
+            margin: 20px auto;
+            display: none;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .qr-diamond {
+            position: absolute;
+            top: 53%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: min(40vw, 165px);
+            height: min(40vw, 165px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        .qr-code {
+            max-width: calc(min(40vw, 165px) - 10px);
+            max-height: calc(min(40vw, 165px) - 10px);
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #ff4757, #ff6b6b);
+        }
+
+        .download-btn:hover {
+            box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
+        }
+
+        #captionDisplay {
+            font-size: 1.1em;
+            color: #d90429;
+            word-break: break-word;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        /* Responsive breakpoints */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            .heart-container {
+                width: min(85vw, 350px);
+                height: min(85vw, 350px);
+            }
+            
+            .qr-diamond {
+                width: min(35vw, 140px);
+                height: min(35vw, 140px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .heart-container {
+                width: min(80vw, 300px);
+                height: min(80vw, 300px);
+            }
+            
+            .qr-diamond {
+                width: min(30vw, 120px);
+                height: min(30vw, 120px);
+            }
+            
+            button {
+                padding: 10px 20px;
+                margin: 5px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .heart-container {
+                width: 90vw;
+                height: 90vw;
+            }
+            
+            .qr-diamond {
+                width: 28vw;
+                height: 28vw;
+            }
+        }
+
+        /* Landscape orientation adjustments */
+        @media (orientation: landscape) and (max-height: 600px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                margin-bottom: 15px;
+            }
+            
+            .input-group {
+                margin-bottom: 15px;
+            }
+            
+            .heart-container {
+                margin: 15px auto;
+                width: min(50vh, 300px);
+                height: min(50vh, 300px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>❤️ Tạo Mã QR Hình Trái Tim ❤️</h1>
+        
+        <div class="input-group">
+            <label for="qrText">Nhập nội dung để tạo mã QR:</label>
+            <input type="text" id="qrText" placeholder="Ví dụ: https://example.com hoặc Hello World!" value="">
+        </div>
+        
+        <div class="input-group">
+            <label for="captionText">Nhập chú thích dưới QR:</label>
+            <input type="text" id="captionText" placeholder="Nhập chú thích...">
+        </div>
+        
+        <div class="input-group">
+            <label for="fontSelect">Chọn font chữ:</label>
+            <select id="fontSelect">
+                <option value="Arial, sans-serif">Arial</option>
+                <option value="'Times New Roman', Times, serif">Times New Roman</option>
+                <option value="'Courier New', Courier, monospace">Courier New</option>
+                <option value="'Comic Sans MS', cursive, sans-serif">Comic Sans MS</option>
+                <option value="'Pacifico', cursive">Pacifico</option>
+                <option value="'Great Vibes', cursive">Great Vibes</option>
+                <option value="'Satisfy', cursive">Satisfy</option>
+                <option value="'Playball', cursive">Playball</option>
+                <option value="'Lobster', cursive">Lobster</option>
+                <option value="'Montserrat', sans-serif">Montserrat</option>
+                <option value="'Dancing Script', cursive">Dancing Script</option>
+            </select>
+        </div>
+        
+        <button onclick="generateQR()">Tạo Mã QR</button>
+        
+        <div class="heart-container" id="heartContainer">
+            <div class="qr-diamond">
+                <canvas id="qrCanvas" class="qr-code"></canvas>
+            </div>
+        </div>
+        <div id="captionDisplay" style="width:100%;text-align:center;margin-top:18px;"></div>
+        
+        <button class="download-btn" id="downloadBtn" onclick="downloadImage()" style="display: none;">
+            💾 Tải xuống hình ảnh
+        </button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <script>
+        // Sử dụng file image.png có sẵn
+        const heartImageData = './image.png';
+
+        function updateCaptionDisplay() {
+            const caption = document.getElementById('captionText').value;
+            const font = document.getElementById('fontSelect').value;
+            const captionDisplay = document.getElementById('captionDisplay');
+            captionDisplay.textContent = caption;
+            captionDisplay.style.fontFamily = font;
+            captionDisplay.style.fontSize = '1.1em';
+            captionDisplay.style.color = '#d90429';
+            captionDisplay.style.wordBreak = 'break-word';
+        }
+
+        function generateQR() {
+            const text = document.getElementById('qrText').value.trim();
+            
+            if (!text) {
+                alert('Vui lòng nhập nội dung để tạo mã QR!');
+                return;
+            }
+            
+            const canvas = document.getElementById('qrCanvas');
+            const heartContainer = document.getElementById('heartContainer');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const captionDisplay = document.getElementById('captionDisplay');
+            
+            try {
+                // Create QR code using qrcode-generator library
+                const qr = qrcode(0, 'M');
+                qr.addData(text);
+                qr.make();
+                
+                // Get the module count and calculate responsive size
+                const moduleCount = qr.getModuleCount();
+              let containerWidth;
+if (window.innerWidth <= 480) {
+    containerWidth = Math.min(window.innerWidth * 0.35, 120); // nhỏ hơn cho mobile
+} else if (window.innerWidth <= 768) {
+    containerWidth = Math.min(window.innerWidth * 0.35, 140);
+} else {
+    containerWidth = Math.min(window.innerWidth * 0.4, 160);
+}
+                const cellSize = Math.floor(containerWidth / moduleCount);
+                const qrSize = cellSize * moduleCount;
+
+                // Save for download
+                window._qrRenderInfo = {
+                    qrSize,
+                    containerWidth
+                };
+                
+                // Set canvas size
+                canvas.width = qrSize;
+                canvas.height = qrSize;
+                
+                const ctx = canvas.getContext('2d');
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, qrSize, qrSize);
+                
+                // Draw QR code dengan màu đỏ giống heart
+                for (let row = 0; row < moduleCount; row++) {
+                    for (let col = 0; col < moduleCount; col++) {
+                        if (qr.isDark(row, col)) {
+                            // Sử dụng màu đỏ giống với heart (#ff4757)
+                            const grad = ctx.createLinearGradient(
+                                col * cellSize, row * cellSize,
+                                (col + 1) * cellSize, (row + 1) * cellSize
+                            );
+                            grad.addColorStop(0, '#FE0000');
+                            grad.addColorStop(0.5, '#ff3742');
+                            grad.addColorStop(1, '#e63946');
+                            ctx.fillStyle = grad;
+
+                            // Bo góc nhẹ cho ô QR
+                            const radius = Math.max(1, cellSize * 0.2);
+                            ctx.beginPath();
+                            ctx.roundRect(col * cellSize, row * cellSize, cellSize, cellSize, radius);
+                            ctx.fill();
+                        }
+                    }
+                }
+                
+                // Đặt nền heart
+                heartContainer.style.backgroundImage = `url(${heartImageData})`;
+                heartContainer.style.display = 'block';
+                downloadBtn.style.display = 'inline-block';
+                
+                // Cập nhật chú thích
+                const captionText = document.getElementById('captionText').value.trim();
+                captionDisplay.innerText = captionText ? captionText : '';
+                
+                // Smooth scroll to result
+                heartContainer.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+                
+            } catch (error) {
+                console.error('QR Code generation error:', error);
+                alert('Có lỗi xảy ra khi tạo mã QR!');
+            }
+        }
+        
+      function downloadImage() {
+    const heartContainer = document.getElementById('heartContainer');
+    const qrCanvas = document.getElementById('qrCanvas');
+    
+    // Create a canvas for the final image
+    const finalCanvas = document.createElement('canvas');
+    const ctx = finalCanvas.getContext('2d');
+    
+    // Load the heart image
+    const heartImg = new Image();
+    heartImg.onload = function() {
+        // Set canvas to high resolution
+        const scale = 2; // For better quality
+        finalCanvas.width = heartImg.width * scale;
+        finalCanvas.height = heartImg.height * scale;
+        ctx.scale(scale, scale);
+        
+        // Draw heart background
+        ctx.drawImage(heartImg, 0, 0);
+        
+        // Use the same qrSize as when rendering
+        const renderInfo = window._qrRenderInfo;
+        let qrSize;
+        if (renderInfo) {
+            // Tính lại qrSize theo tỉ lệ giữa heartContainer và heartImg
+            const heartContainer = document.getElementById('heartContainer');
+            const displayWidth = heartContainer.offsetWidth;
+            qrSize = renderInfo.qrSize * (heartImg.width / displayWidth);
+        } else {
+            qrSize = Math.min(heartImg.width, heartImg.height) * 0.35;
+        }
+
+        // Calculate QR position (slightly above center)
+        const centerX = heartImg.width / 2;
+        const centerY = heartImg.height * 0.55;
+
+        // Draw QR code with rotation
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(Math.PI / 4);
+        ctx.drawImage(qrCanvas, -qrSize/2, -qrSize/2, qrSize, qrSize);
+        ctx.restore();
+        
+        // Thêm chú thích vào hình ảnh - KHÔNG XOAY, luôn ở giữa
+        const caption = document.getElementById('captionText').value;
+        const font = document.getElementById('fontSelect').value;
+        if (caption) {
+            ctx.save();
+            
+            // Thiết lập font
+            const fontSize = Math.round(qrSize/6); // Giảm kích thước font
+            ctx.font = `bold ${fontSize}px ${font}`;
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#FE0000';
+            ctx.textBaseline = 'top';
+            
+            // Tính toán vị trí chữ - luôn ở giữa canvas và dưới QR code
+            const textX = heartImg.width / 2; // Luôn ở giữa theo chiều ngang
+            
+            // Tính toán vị trí Y: dưới QR code (có xoay 45 độ)
+            // QR code xoay 45 độ nên chiều cao thực tế là qrSize * sqrt(2) / 2
+            const rotatedQRHeight = qrSize * Math.sqrt(2) / 2;
+            const textY = centerY + rotatedQRHeight + 100; // 20px khoảng cách
+            
+            // Vẽ chữ KHÔNG xoay
+            ctx.fillText(caption, textX, textY, heartImg.width * 0.8); // Giới hạn chiều rộng
+            
+            ctx.restore();
+        }
+        
+        // Download the final image
+        finalCanvas.toBlob(function(blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `qr-heart-${Date.now()}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 'image/png', 1.0);
+    };
+    
+    heartImg.src = heartImageData;
+}
+        document.getElementById('captionText').addEventListener('input', updateCaptionDisplay);
+        document.getElementById('fontSelect').addEventListener('change', updateCaptionDisplay);
+
+        // Allow Enter key to generate QR
+        document.getElementById('qrText').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateQR();
+            }
+        });
+
+        // Auto load when page loads
+        window.addEventListener('load', function() {
+            const heartContainer = document.getElementById('heartContainer');
+            heartContainer.style.backgroundImage = `url(${heartImageData})`;
+        });
+
+        // Load QR from URL parameter
+        window.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const qr = params.get('qr');
+    if (qr) {
+        document.getElementById('qrText').value = qr;
+        generateQR();
+    }
+});
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            // Regenerate QR if it exists to maintain proper sizing
+            const qrText = document.getElementById('qrText').value.trim();
+            if (qrText && document.getElementById('heartContainer').style.display === 'block') {
+                setTimeout(generateQR, 100);
+            }
+        });
+    </script>
+</body>
+</html>
